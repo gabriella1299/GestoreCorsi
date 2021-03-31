@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.corsi.model.Corso;
 import it.polito.tdp.corsi.model.Model;
+import it.polito.tdp.corsi.model.Studente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -71,10 +72,23 @@ public class FXMLController {
     		txtRisultato.setText("Devi inserire 1 o 2 per il periodo didattico");
     	
     	List<Corso> corsi=this.model.getCorsiByPeriodo(periodo);
-    	
+    	/*
     	for(Corso c:corsi) {
     		txtRisultato.appendText(c.toString()+"\n");
+    	}*/
+    	
+    	
+    	StringBuilder sb= new StringBuilder();
+    	for(Corso c:corsi) {	//colonna+allineamento a sx+numero per lo spazio, quanti caratteri sono riservati per la colonna+tipo di dato inserito
+    		sb.append(String.format("%-8s ",c.getCodins()));//%: spazio che va riempito con cio' che c'e' dopo
+    		sb.append(String.format("%-4d ",c.getCrediti()));
+    		sb.append(String.format("%-50s ",c.getNome()));
+    		sb.append(String.format("%-4d\n ",c.getPd()));
+    		
+    		//oppure: sb.append(String.format("%-8s %-4d",c.getCodins(),,c.getCrediti(),..));
+    		
     	}
+    	txtRisultato.appendText(sb.toString()+"\n");
     }
 
     @FXML
@@ -111,12 +125,44 @@ public class FXMLController {
 
     @FXML
     void stampaDivisione(ActionEvent event) {
-
+    	txtRisultato.clear();
+    	String codice=txtCorso.getText(); 
+    	//codice associato a corso esistente?
+    	if(!model.esisteCorso(codice)) {
+    		txtRisultato.appendText("Il corso non esiste");
+    		return;
+    	}
+    	
+    	Map<String,Integer> divisione=this.model.getDivisioneCDS(codice);
+    	
+    	for(String cds: divisione.keySet()) {
+    		txtRisultato.appendText(cds+" "+divisione.get(cds)+"\n");
+    	}
     }
 
     @FXML
     void stampaStudenti(ActionEvent event) {
-
+    	txtRisultato.clear();
+    	String codice=txtCorso.getText(); 
+    	//codice associato a corso esistente?
+    	if(!model.esisteCorso(codice)) {
+    		txtRisultato.appendText("Il corso non esiste");
+    		return;
+    	}
+    	
+    	List<Studente> studenti=this.model.getStudentiByCorso(codice); //se corso non esiste rimane vuota la lista!
+    	
+    	if(studenti.size()==0) {
+    		txtRisultato.appendText("Il corso non ha iscritti");
+    		return;
+    	}
+    	
+    	//Se arrivo qui ho una lista di studenti
+    	
+    	for(Studente s:studenti) {
+    		txtRisultato.appendText(s+"\n");
+    	}
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -133,6 +179,8 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	txtRisultato.setStyle("-fx-font-family: monospace");//per utilizzare i nostri placeorder in modo corretto
+    	
     }
     
     
