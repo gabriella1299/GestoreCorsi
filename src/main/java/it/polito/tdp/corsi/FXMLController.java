@@ -115,12 +115,17 @@ public class FXMLController {
     	
     	Map<Corso,Integer> corsiIscrizioni=this.model.getIscrittiByPeriodo(periodo);
     	
-    	for(Corso c:corsiIscrizioni.keySet()) {
+    	/*for(Corso c:corsiIscrizioni.keySet()) {
     		txtRisultato.appendText(c.toString());
     		Integer n=corsiIscrizioni.get(c);
     		
     		txtRisultato.appendText("\t"+n+"\n");
-    	}
+    	}*/
+    	StringBuilder sb = new StringBuilder();
+    	for(Corso c : corsiIscrizioni.keySet()) 
+    		sb.append(String.format("%-50s %4d\n", c.getNome(), corsiIscrizioni.get(c)));
+
+    	txtRisultato.appendText(sb.toString());
     }
 
     @FXML
@@ -136,7 +141,7 @@ public class FXMLController {
     	Map<String,Integer> divisione=this.model.getDivisioneCDS(codice);
     	
     	for(String cds: divisione.keySet()) {
-    		txtRisultato.appendText(cds+" "+divisione.get(cds)+"\n");
+    		txtRisultato.appendText(String.format("%-8s %4d\n", cds,divisione.get(cds)));
     	}
     }
 
@@ -158,9 +163,9 @@ public class FXMLController {
     	}
     	
     	//Se arrivo qui ho una lista di studenti
-    	
-    	for(Studente s:studenti) {
-    		txtRisultato.appendText(s+"\n");
+
+    	for(Studente s : studenti) {
+    		txtRisultato.appendText(s + "\n");
     	}
     	
     }

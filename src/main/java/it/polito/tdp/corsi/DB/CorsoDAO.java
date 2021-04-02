@@ -74,7 +74,7 @@ public class CorsoDAO {//chiamata cosi perche query su corsi
 		return result;
 	}
 	
-	public List<Studente> getStudentiByCorso(Corso corso){
+	public List<Studente> getStudentiByCorso(Corso corso){ //potevamo usare anche String codice
 		
 		String sql="SELECT s.matricola,s.cognome,s.nome, s.CDS "
 				+ "FROM studente s, iscrizione i "
