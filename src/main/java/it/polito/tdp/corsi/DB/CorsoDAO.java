@@ -107,7 +107,7 @@ public class CorsoDAO {//chiamata cosi perche query su corsi
 	public Map<String,Integer> getDivisioneCDS (Corso corso) {
 		String sql="SELECT s.CDS, COUNT(*) AS tot "
 				+ "FROM studente s,iscrizione i "
-				+ "WHERE s.matricola=i.matricola AND i.codins='01OVYPG' AND s.CDS <> '' "
+				+ "WHERE s.matricola=i.matricola AND i.codins=? AND s.CDS <> '' "
 				+ "GROUP BY s.CDS";
 		
 		Map<String,Integer> result= new HashMap<String,Integer>();
